@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>ClusterClub | Shared Logistics &amp; Lower Costs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css"> 
+<style type="text/tailwindcss">@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .dot-pattern {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1.75px);
+    background-size: 16px 16px;
+  }
+  
+  .brand-blue-gradient {
+    background: linear-gradient(#Ffcd30 0%, #e6b82b 100%);
+  }
+
+  .brand-pink-gradient {
+    background: linear-gradient(#Ffcd30 0%, #e6b82b 100%);
+  }
+
+  .custom-button-shadow {
+    box-shadow: rgba(255, 255, 255, 0.24) 0px 1.5px 0px 0px inset;
+  }
+
+  .dashed-border-h {
+    border-top: 0.5px dashed;
+    border-image: repeating-linear-gradient(to right, transparent 0px, transparent 4px, oklab(0.11 0.02 261.69 / 0.1) 4px, oklab(0.11 0.02 261.69 / 0.1) 12px) 1;
+  }
+
+  .dashed-border-v {
+    border-left: 0.5px dashed;
+    border-image: repeating-linear-gradient(to bottom, transparent 0px, transparent 4px, oklab(0.11 0.02 261.69 / 0.1) 4px, oklab(0.11 0.02 261.69 / 0.1) 12px) 1;
+  }
+
+  .click-feedback {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple-effect 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+  }
+
+  @keyframes ripple-effect {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  .btn-press:active {
+    transform: scale(0.96);
+    transition: transform 0.1s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .animate-on-scroll-hidden { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+  .animate-on-scroll-visible { opacity: 1; transform: translateY(0); }
+}</style><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = {
+  important: '#app-root',
+  theme: {
+    extend: {
+      colors: {
+        'brand-primary': '#Ffcd30',
+        'brand-secondary': '#e6b82b',
+        'neutral-background': 'oklch(0.97 0.005 264.53)',
+        'text-primary': 'oklch(0.11 0.02 261.69)',
+        'text-muted': 'oklch(0.45 0.02 262.02)',
+        'border-base': 'oklch(0.85 0.01 264.53)',
+        'brand-accent': '#Ffcd30',
+        'success': 'oklch(0.60 0.1828 150.59)',
+      },
+      fontFamily: {
+        'sans': ['Inter Tight', 'Bricolage Grotesque', 'sans-serif'],
+      },
+      spacing: {
+        's': '16px',
+        'm': '24px',
+        'l': '32px',
+        'xl': '48px',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'md': '16px',
+        'lg': '40px',
+      },
+      boxShadow: {
+        'cta': '0 4px 15px rgba(255, 205, 48, 0.3)',
+        'card': '0 20px 40px rgba(0, 0, 0, 0.05)',
+        'multi': 'rgba(120, 120, 120, 0.1) -1px 1px 3px 0px, rgba(120, 120, 120, 0.05) -8px 8px 7px 0px',
+      },
+      keyframes: {
+        dash: {
+          'to': { 'stroke-dashoffset': '-20' },
+        },
+        'cluster-move-1': {
+          '0%': { transform: 'translate(0, 0)', opacity: '0' },
+          '20%': { opacity: '1' },
+          '80%': { transform: 'translate(140px, 140px)', opacity: '1' },
+          '100%': { transform: 'translate(140px, 140px)', opacity: '0' }
+        },
+        'cluster-move-2': {
+          '0%': { transform: 'translate(0, 0)', opacity: '0' },
+          '20%': { opacity: '1' },
+          '80%': { transform: 'translate(140px, -140px)', opacity: '1' },
+          '100%': { transform: 'translate(140px, -140px)', opacity: '0' }
+        },
+        'cluster-move-3': {
+          '0%': { transform: 'translate(0, 0)', opacity: '0' },
+          '20%': { opacity: '1' },
+          '80%': { transform: 'translate(-140px, 80px)', opacity: '1' },
+          '100%': { transform: 'translate(-140px, 80px)', opacity: '0' }
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
+      },
+      animation: {
+        'dash': 'dash 3s linear infinite',
+        'float': 'float 4s ease-in-out infinite',
+        'cluster-1': 'cluster-move-1 4s ease-in-out infinite',
+        'cluster-2': 'cluster-move-2 4s ease-in-out infinite 1s',
+        'cluster-3': 'cluster-move-3 4s ease-in-out infinite 2s',
+      }
+    },
+  },
+  plugins: [],
+}</script></head>
+<body id="app-root">
+  <div class="font-sans antialiased text-text-primary bg-neutral-background min-h-screen flex flex-col">
+    <header class="sticky top-0 z-50 w-full bg-neutral-background/80 backdrop-blur-md border-b border-border-base">
+      <div id="global-navigation" class="relative z-20 flex h-[64px] w-full py-2.5 px-6">
+        <div class="mx-auto flex w-full max-w-[1120px] flex-row items-center overflow-visible">
+          
+          <div class="flex shrink-0 items-center mr-8" data-pixel-id="cjcp2" data-pixel-kind="text">
+            <a class="text-xl font-bold tracking-tighter text-text-primary flex items-center gap-2" href="#" data-pixel-id="4qst3" data-pixel-kind="link">
+              <span class="material-symbols-outlined text-brand-primary">hub</span>
+              ClusterClub
+            </a>
+          </div>
+
+          <nav aria-label="Main" class="hidden md:flex flex-1 items-center px-4">
+            <ul class="flex list-none items-center gap-1 overflow-visible">
+              <li data-pixel-id="fon2v" data-pixel-kind="text"><a class="hover:bg-neutral-100 flex items-center rounded-md px-3 py-2 text-sm font-medium text-text-primary transition-all" href="#solutions" data-pixel-id="prtnn" data-pixel-kind="link">Solutions</a></li>
+              <li data-pixel-id="w7lu4" data-pixel-kind="text"><a class="hover:bg-neutral-100 flex items-center rounded-md px-3 py-2 text-sm font-medium text-text-primary transition-all" href="#how-it-works" data-pixel-id="bdoc6" data-pixel-kind="link">How it Works</a></li>
+              <li data-pixel-id="uf8v4" data-pixel-kind="text"><a class="hover:bg-neutral-100 flex items-center rounded-md px-3 py-2 text-sm font-medium text-text-primary transition-all" href="#who-we-serve" data-pixel-id="nu9wb" data-pixel-kind="link">Who We Serve</a></li>
+              <li data-pixel-id="0gfq4" data-pixel-kind="text"><a class="hover:bg-neutral-100 flex items-center rounded-md px-3 py-2 text-sm font-medium text-text-primary transition-all" href="#faq" data-pixel-id="vcog5" data-pixel-kind="link">FAQ</a></li>
+            </ul>
+          </nav>
+
+          <div class="hidden flex-row items-center gap-2 md:flex ml-auto" data-pixel-id="aw2ow" data-pixel-kind="text">
+            <a class="btn-press click-feedback inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md text-sm font-medium border border-transparent h-9 px-4 py-2 text-text-primary hover:bg-neutral-100 transition-colors" href="#" data-pixel-id="z2uav" data-pixel-kind="link">
+              Book a Demo
+            </a>
+            <a class="btn-press click-feedback inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md text-sm font-bold transition-all duration-150 bg-brand-primary text-text-primary h-9 px-6 py-2 shadow-sm hover:opacity-90" href="#" data-pixel-id="4qle7" data-pixel-kind="link">
+              Start Pilot
+            </a>
+          </div>
+
+          <button id="mobile-menu-trigger" class="inline-flex md:hidden cursor-pointer items-center justify-center h-9 w-9 rounded-md border border-border-base bg-neutral-background hover:bg-neutral-100 text-text-primary shadow-xs z-[100] transition-all" type="button" data-pixel-id="y92l1" data-pixel-kind="text">
+            <span class="material-symbols-outlined" id="menu-icon-open">menu</span>
+            <span class="material-symbols-outlined hidden" id="menu-icon-close">close</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" class="fixed inset-0 z-[60] hidden bg-white md:hidden overflow-y-auto pt-20 pb-10 px-6">
+        <nav class="flex flex-col gap-6 text-center">
+          <a href="#solutions" class="text-lg font-medium py-2" data-pixel-id="u29kn" data-pixel-kind="link">Solutions</a>
+          <a href="#how-it-works" class="text-lg font-medium py-2" data-pixel-id="8hx41" data-pixel-kind="link">How it Works</a>
+          <a href="#who-we-serve" class="text-lg font-medium py-2" data-pixel-id="8fcfu" data-pixel-kind="link">Who We Serve</a>
+          <div class="h-px bg-border-base w-full"></div>
+          <a class="flex h-12 items-center justify-center rounded-xl bg-brand-primary text-white font-bold" href="#" data-pixel-id="f6i4v" data-pixel-kind="link">Start Pilot</a>
+          <a class="flex h-12 items-center justify-center rounded-xl border border-border-base font-medium" href="#" data-pixel-id="nflyu" data-pixel-kind="link">Book a Demo</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-grow"><section id="landing-hero" class="dot-pattern py-16 lg:py-32 px-6 relative overflow-hidden">
+  <div class="max-w-[1120px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    
+    <!-- Text Content -->
+    <div class="flex flex-col items-center text-center lg:items-start lg:text-left gap-8">
+      <div data-animation-on-scroll="" class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-border-base rounded-full shadow-sm" data-pixel-id="qa9l2" data-pixel-kind="text">
+        <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">🚚 Smarter Logistics for Businesses</span>
+      </div>
+      
+      <div data-animation-on-scroll="" class="flex flex-col gap-4">
+        <h1 class="text-5xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-[1.05] text-text-primary" data-pixel-id="gk44f" data-pixel-kind="text">
+          Reduce Delivery Costs by Up to <span class="text-brand-primary italic">30%</span>
+        </h1>
+        <p class="text-text-muted text-lg lg:text-xl max-w-xl" data-pixel-id="zeytw" data-pixel-kind="text">
+          ClusterClub helps businesses, distributors, and brands optimize deliveries through shipment clustering, route planning, and shared networks.
+        </p>
+      </div>
+
+      <div data-animation-on-scroll="" class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto" data-pixel-id="wk4tn" data-pixel-kind="text">
+        <a href="#pilot" class="btn-press click-feedback brand-blue-gradient custom-button-shadow text-text-primary px-8 py-3.5 rounded-xl font-bold text-sm shadow-cta transition-all w-full sm:w-auto text-center" data-pixel-id="m0d3a" data-pixel-kind="link">
+          Start Pilot
+        </a>
+        <a href="#" class="btn-press click-feedback bg-white px-8 py-3.5 rounded-xl font-bold text-sm border border-border-base text-text-primary hover:bg-neutral-50 transition-all w-full sm:w-auto text-center" data-pixel-id="s5twd" data-pixel-kind="link">
+          Book a Demo
+        </a>
+      </div>
+
+      <div data-animation-on-scroll="" class="mt-4 flex flex-col gap-4">
+        <p class="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]" data-pixel-id="ck5jm" data-pixel-kind="text">Serving the needs of</p>
+        <div class="flex flex-wrap justify-center lg:justify-start gap-6 opacity-40 grayscale hover:grayscale-0 transition-all" data-pixel-id="rlv4z" data-pixel-kind="text">
+          <span class="text-lg font-black italic">B2B</span>
+          <span class="text-lg font-black italic">D2C</span>
+          <span class="text-lg font-black italic">RETAIL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Visual: Clustering Animation (Side-by-side on LG) -->
+    <div class="relative hidden lg:block" data-animation-on-scroll="">
+      <div class="w-full bg-white rounded-3xl border border-border-base shadow-2xl p-8 overflow-hidden aspect-square relative flex items-center justify-center">
+        <div class="absolute inset-0 dot-pattern opacity-40"></div>
+        
+        <div class="relative w-full h-full flex items-center justify-center scale-90">
+          <!-- The "Cluster Hub" Center -->
+          <div class="relative z-10 size-24 bg-brand-primary rounded-2xl flex items-center justify-center shadow-xl rotate-12">
+            <span class="material-symbols-outlined text-4xl text-text-primary" data-pixel-id="2j1kt" data-pixel-kind="text">hub</span>
+            <div class="absolute inset-0 bg-brand-primary rounded-2xl animate-ping opacity-20"></div>
+          </div>
+
+          <!-- Incoming Delivery Points -->
+          <div class="absolute top-[10%] left-[15%] size-3 bg-text-primary/10 rounded-full"></div>
+          <div class="absolute bottom-[20%] left-[10%] size-3 bg-text-primary/10 rounded-full"></div>
+          <div class="absolute top-[30%] right-[10%] size-3 bg-text-primary/10 rounded-full"></div>
+
+          <!-- Animated "Cluster" Elements -->
+          <div class="absolute top-[10%] left-[15%] animate-cluster-1">
+            <div class="flex items-center gap-2 bg-white border border-border-base rounded-lg p-2 shadow-lg" data-pixel-id="t15jw" data-pixel-kind="text">
+              <span class="material-symbols-outlined text-xs text-brand-primary">package_2</span>
+              <span class="text-[8px] font-bold">SHIPMENT #A1</span>
+            </div>
+          </div>
+
+          <div class="absolute bottom-[20%] left-[10%] animate-cluster-2">
+            <div class="flex items-center gap-2 bg-white border border-border-base rounded-lg p-2 shadow-lg" data-pixel-id="9cvqa" data-pixel-kind="text">
+              <span class="material-symbols-outlined text-xs text-brand-primary">package_2</span>
+              <span class="text-[8px] font-bold">SHIPMENT #B4</span>
+            </div>
+          </div>
+
+          <div class="absolute top-[30%] right-[10%] animate-cluster-3">
+            <div class="flex items-center gap-2 bg-white border border-border-base rounded-lg p-2 shadow-lg" data-pixel-id="1nib9" data-pixel-kind="text">
+              <span class="material-symbols-outlined text-xs text-brand-primary">package_2</span>
+              <span class="text-[8px] font-bold">SHIPMENT #C9</span>
+            </div>
+          </div>
+
+          <!-- Connection Paths -->
+          <svg class="absolute inset-0 w-full h-full opacity-20 pointer-events-none">
+            <path d="M 60 60 L 250 250" stroke="currentColor" stroke-width="2" fill="none" class="text-brand-primary animate-dash" stroke-dasharray="6 6"></path>
+            <path d="M 60 440 L 250 250" stroke="currentColor" stroke-width="2" fill="none" class="text-brand-primary animate-dash" stroke-dasharray="6 6"></path>
+            <path d="M 440 150 L 250 250" stroke="currentColor" stroke-width="2" fill="none" class="text-brand-primary animate-dash" stroke-dasharray="6 6"></path>
+          </svg>
+
+          <!-- Dynamic Status Labels -->
+          <div class="absolute top-0 left-0 bg-neutral-900 text-white text-[8px] px-3 py-1 rounded-full font-mono shadow-sm" data-pixel-id="6kfs8" data-pixel-kind="text">Syncing Zones...</div>
+          <div class="absolute bottom-0 right-0 bg-success text-white text-[8px] px-3 py-1 rounded-full font-mono shadow-sm" data-pixel-id="zha7d" data-pixel-kind="text">Density: +30%</div>
+        </div>
+      </div>
+
+      <!-- Floating Stats Badge -->
+      <div class="absolute -bottom-6 -left-6 bg-white border border-border-base p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-float">
+        <div class="size-10 rounded-full bg-success/10 flex items-center justify-center text-success" data-pixel-id="n9dmv" data-pixel-kind="text">
+          <span class="material-symbols-outlined">trending_down</span>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-text-muted uppercase" data-pixel-id="0sy03" data-pixel-kind="text">Avg. Savings</p>
+          <p class="text-lg font-bold text-text-primary" data-pixel-id="jg00u" data-pixel-kind="text">-$14.50/Drop</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problem" class="py-20 px-6 border-t border-border-base bg-white">
+  <div class="max-w-[1120px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div data-animation-on-scroll="" class="flex flex-col gap-6">
+      <h2 class="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-text-primary" data-pixel-id="ul9uj" data-pixel-kind="text">
+        Logistics Today is Reactive &amp; Expensive
+      </h2>
+      <p class="text-text-muted text-lg" data-pixel-id="dym4c" data-pixel-kind="text">
+        Whether you are a manufacturer sending goods across the city or a brand fulfilling orders, most deliveries happen one order at a time. This fragmentation kills your margins.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex items-center gap-3" data-pixel-id="n9kzh" data-pixel-kind="text">
+          <span class="material-symbols-outlined text-red-500">warning</span>
+          <span class="text-sm font-medium text-text-muted">High per-shipment costs</span>
+        </div>
+        <div class="flex items-center gap-3" data-pixel-id="k2pqo" data-pixel-kind="text">
+          <span class="material-symbols-outlined text-red-500">warning</span>
+          <span class="text-sm font-medium text-text-muted">Underutilized vehicles</span>
+        </div>
+        <div class="flex items-center gap-3" data-pixel-id="flj8i" data-pixel-kind="text">
+          <span class="material-symbols-outlined text-red-500">warning</span>
+          <span class="text-sm font-medium text-text-muted">Low route efficiency</span>
+        </div>
+        <div class="flex items-center gap-3" data-pixel-id="lr9vc" data-pixel-kind="text">
+          <span class="material-symbols-outlined text-red-500">warning</span>
+          <span class="text-sm font-medium text-text-muted">No planning layer</span>
+        </div>
+      </div>
+    </div>
+    <div data-animation-on-scroll="" class="relative">
+      <img src="https://images.pexels.com/photos/29687996/pexels-photo-29687996.jpeg?w=800&amp;h=600&amp;fit=crop" alt="Fragmented Logistics" class="rounded-3xl border border-border-base shadow-multi" data-pixel-id="234ts" data-pixel-kind="image">
+      <div class="absolute -bottom-6 -right-6 bg-brand-accent text-white p-6 rounded-2xl shadow-xl max-w-xs">
+        <p class="text-xs font-bold uppercase tracking-widest mb-2 opacity-80" data-pixel-id="5c0xu" data-pixel-kind="text">Insight</p>
+        <p class="text-sm font-medium italic" data-pixel-id="vra2i" data-pixel-kind="text">"Businesses are paying premium rates for logistics that could be optimized by 30% through simple clustering."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="solutions" class="py-20 px-6 bg-neutral-background dot-pattern">
+  <div class="max-w-[1120px] mx-auto flex flex-col gap-12">
+    <div data-animation-on-scroll="" class="text-center max-w-3xl mx-auto flex flex-col gap-4">
+      <h2 class="text-4xl lg:text-6xl font-bold tracking-tight text-text-primary" data-pixel-id="igjkv" data-pixel-kind="text">Introducing ClusterClub</h2>
+      <p class="text-text-muted text-lg" data-pixel-id="hikcg" data-pixel-kind="text">ClusterClub transforms fragmented deliveries into planned movement. We aggregate demand and create optimized shared capacity routes.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div data-animation-on-scroll="" class="bg-white p-8 rounded-3xl border border-border-base shadow-sm hover:shadow-md transition-all flex flex-col gap-6">
+        <div class="size-12 rounded-xl bg-brand-primary/10 flex items-center justify-center text-text-primary" data-pixel-id="oanc6" data-pixel-kind="text">
+          <span class="material-symbols-outlined">combine_columns</span>
+        </div>
+        <h3 class="text-xl font-bold" data-pixel-id="fcc8d" data-pixel-kind="text">Smart Aggregation</h3>
+        <p class="text-text-muted text-sm leading-relaxed" data-pixel-id="43q0v" data-pixel-kind="text">Combine nearby shipments from multiple sellers into single, high-density routes to eliminate empty miles.</p>
+      </div>
+      <div data-animation-on-scroll="" class="bg-white p-8 rounded-3xl border border-border-base shadow-sm hover:shadow-md transition-all flex flex-col gap-6">
+        <div class="size-12 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary" data-pixel-id="sbct1" data-pixel-kind="text">
+          <span class="material-symbols-outlined">route</span>
+        </div>
+        <h3 class="text-xl font-bold" data-pixel-id="d67zh" data-pixel-kind="text">Optimized Dispatch</h3>
+        <p class="text-text-muted text-sm leading-relaxed" data-pixel-id="e01s0" data-pixel-kind="text">Automatically match delivery demand with the right vehicle type and size for maximum utilization.</p>
+      </div>
+      <div data-animation-on-scroll="" class="bg-white p-8 rounded-3xl border border-border-base shadow-sm hover:shadow-md transition-all flex flex-col gap-6">
+        <div class="size-12 rounded-xl bg-green-50 flex items-center justify-center text-success" data-pixel-id="98gfs" data-pixel-kind="text">
+          <span class="material-symbols-outlined">monetization_on</span>
+        </div>
+        <h3 class="text-xl font-bold" data-pixel-id="0ipgd" data-pixel-kind="text">Cost Savings</h3>
+        <p class="text-text-muted text-sm leading-relaxed" data-pixel-id="cjxef" data-pixel-kind="text">Stop paying for full trucks when you only need a fraction of the space. Pay only for what you move.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works" class="py-20 px-6 bg-white overflow-hidden">
+  <div class="max-w-[1120px] mx-auto">
+    <div data-animation-on-scroll="" class="mb-16">
+      <h2 class="text-4xl lg:text-6xl font-bold tracking-tight text-text-primary" data-pixel-id="g84f6" data-pixel-kind="text">Simple 4-Step Process</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
+      <div data-animation-on-scroll="" class="relative p-8 flex flex-col gap-4 border-l md:border-l-0 md:border-t border-border-base">
+        <span class="text-5xl font-black text-neutral-100 absolute top-4 right-4" data-pixel-id="mm1r9" data-pixel-kind="text">01</span>
+        <h3 class="text-lg font-bold" data-pixel-id="vrvcu" data-pixel-kind="text">Submit Request</h3>
+        <p class="text-xs text-text-muted" data-pixel-id="qxgt4" data-pixel-kind="text">Enter pickup, drop, and goods category into our system via app or API.</p>
+      </div>
+      <div data-animation-on-scroll="" class="relative p-8 flex flex-col gap-4 border-l md:border-l-0 md:border-t border-border-base">
+        <span class="text-5xl font-black text-neutral-100 absolute top-4 right-4" data-pixel-id="kx37m" data-pixel-kind="text">02</span>
+        <h3 class="text-lg font-bold" data-pixel-id="blyo7" data-pixel-kind="text">Intelligent Clustering</h3>
+        <p class="text-xs text-text-muted" data-pixel-id="ncw4w" data-pixel-kind="text">Our engine groups deliveries based on zone, time, and vehicle compatibility.</p>
+      </div>
+      <div data-animation-on-scroll="" class="relative p-8 flex flex-col gap-4 border-l md:border-l-0 md:border-t border-border-base">
+        <span class="text-5xl font-black text-neutral-100 absolute top-4 right-4" data-pixel-id="n8ict" data-pixel-kind="text">03</span>
+        <h3 class="text-lg font-bold" data-pixel-id="q3l83" data-pixel-kind="text">Route Optimization</h3>
+        <p class="text-xs text-text-muted" data-pixel-id="n8yrj" data-pixel-kind="text">We create efficient routes using shared vehicles depending on local demand.</p>
+      </div>
+      <div data-animation-on-scroll="" class="relative p-8 flex flex-col gap-4 border-l md:border-l-0 md:border-t border-border-base">
+        <span class="text-5xl font-black text-neutral-100 absolute top-4 right-4" data-pixel-id="mnv4p" data-pixel-kind="text">04</span>
+        <h3 class="text-lg font-bold" data-pixel-id="2hjf1" data-pixel-kind="text">Live Fulfillment</h3>
+        <p class="text-xs text-text-muted" data-pixel-id="j0ic5" data-pixel-kind="text">Track your goods in real-time with digital delivery confirmation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="who-we-serve" class="py-20 px-6 bg-neutral-background">
+  <div class="max-w-[1120px] mx-auto flex flex-col gap-16">
+    <div data-animation-on-scroll="" class="text-center">
+      <h2 class="text-4xl lg:text-6xl font-bold tracking-tight text-text-primary" data-pixel-id="oyfvr" data-pixel-kind="text">Built for Modern Movement</h2>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- B2B -->
+      <div data-animation-on-scroll="" class="bg-white rounded-[40px] overflow-hidden flex flex-col shadow-sm">
+        <div class="p-8 pb-4">
+          <h3 class="text-2xl font-bold mb-2" data-pixel-id="smcah" data-pixel-kind="text">B2B Businesses</h3>
+          <p class="text-sm text-text-muted mb-6" data-pixel-id="kfqcr" data-pixel-kind="text">Manufacturers, wholesalers, and industrial units moving goods across the city.</p>
+          <div class="bg-neutral-50 rounded-2xl p-4 border border-border-base">
+            <p class="text-[10px] font-bold text-brand-primary uppercase tracking-widest mb-1" data-pixel-id="rfgqe" data-pixel-kind="text">Use Case</p>
+            <p class="text-xs font-medium italic" data-pixel-id="7jx2p" data-pixel-kind="text">"Move goods daily at lower cost than booking full dedicated vehicles."</p>
+          </div>
+        </div>
+        <img src="https://images.pexels.com/photos/4115457/pexels-photo-4115457.jpeg?w=600&amp;h=400&amp;fit=crop" alt="B2B Logistics" class="mt-auto h-48 object-cover" data-pixel-id="1ryvd" data-pixel-kind="image">
+      </div>
+
+      <!-- D2C -->
+      <div data-animation-on-scroll="" class="bg-white rounded-[40px] overflow-hidden flex flex-col shadow-sm">
+        <div class="p-8 pb-4">
+          <h3 class="text-2xl font-bold mb-2" data-pixel-id="q1np1" data-pixel-kind="text">D2C Brands</h3>
+          <p class="text-sm text-text-muted mb-6" data-pixel-id="8upwd" data-pixel-kind="text">Shopify, beauty, fashion, and grocery brands fulfilling customer orders.</p>
+          <div class="bg-neutral-50 rounded-2xl p-4 border border-border-base">
+            <p class="text-[10px] font-bold text-brand-primary uppercase tracking-widest mb-1" data-pixel-id="zkn2u" data-pixel-kind="text">Use Case</p>
+            <p class="text-xs font-medium italic" data-pixel-id="nnatj" data-pixel-kind="text">"Deliver orders smarter through batching and zone-based route planning."</p>
+          </div>
+        </div>
+        <img src="https://images.pexels.com/photos/9594420/pexels-photo-9594420.jpeg?w=600&amp;h=400&amp;fit=crop" alt="D2C Logistics" class="mt-auto h-48 object-cover" data-pixel-id="fh5q6" data-pixel-kind="image">
+      </div>
+
+      <!-- Retail -->
+      <div data-animation-on-scroll="" class="bg-white rounded-[40px] overflow-hidden flex flex-col shadow-sm">
+        <div class="p-8 pb-4">
+          <h3 class="text-2xl font-bold mb-2" data-pixel-id="w76l3" data-pixel-kind="text">Retail Stores</h3>
+          <p class="text-sm text-text-muted mb-6" data-pixel-id="v46un" data-pixel-kind="text">Pharmacy chains, electronics stores, and local franchise outlets.</p>
+          <div class="bg-neutral-50 rounded-2xl p-4 border border-border-base">
+            <p class="text-[10px] font-bold text-success uppercase tracking-widest mb-1" data-pixel-id="bghm8" data-pixel-kind="text">Use Case</p>
+            <p class="text-xs font-medium italic" data-pixel-id="vt55f" data-pixel-kind="text">"Store-to-customer delivery without expensive one-off dispatches."</p>
+          </div>
+        </div>
+        <img src="https://images.pexels.com/photos/21642936/pexels-photo-21642936.jpeg?w=600&amp;h=400&amp;fit=crop" alt="Retail Logistics" class="mt-auto h-48 object-cover" data-pixel-id="ihamd" data-pixel-kind="image">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="case-study" class="py-20 px-6 bg-text-primary text-white overflow-hidden relative">
+  <div class="absolute inset-0 dot-pattern opacity-10"></div>
+  <div class="max-w-[1120px] mx-auto relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div data-animation-on-scroll="" class="flex flex-col gap-8">
+        <div class="inline-flex items-center gap-2 text-brand-primary" data-pixel-id="q6b81" data-pixel-kind="text">
+          <span class="material-symbols-outlined">analytics</span>
+          <span class="text-xs font-bold uppercase tracking-widest">B2B Example</span>
+        </div>
+        <h2 class="text-4xl lg:text-6xl font-bold tracking-tight" data-pixel-id="luwor" data-pixel-kind="text">For Industrial Deliveries</h2>
+        <p class="text-white/60 text-lg" data-pixel-id="6bdqy" data-pixel-kind="text">
+          A packaging company, printer, and distributor all need deliveries to nearby zones. Instead of booking 3 separate vehicles, ClusterClub combines demand into one optimized route.
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4 border-b border-white/10 pb-4">
+            <div class="size-10 rounded-full bg-success/20 flex items-center justify-center text-success" data-pixel-id="5subo" data-pixel-kind="text"><span class="material-symbols-outlined">check</span></div>
+            <span class="text-lg font-bold" data-pixel-id="zgnys" data-pixel-kind="text">Lower transport spend</span>
+          </div>
+          <div class="flex items-center gap-4 border-b border-white/10 pb-4">
+            <div class="size-10 rounded-full bg-success/20 flex items-center justify-center text-success" data-pixel-id="te5jb" data-pixel-kind="text"><span class="material-symbols-outlined">check</span></div>
+            <span class="text-lg font-bold" data-pixel-id="5t43x" data-pixel-kind="text">Fewer vehicles on road</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="size-10 rounded-full bg-success/20 flex items-center justify-center text-success" data-pixel-id="74j82" data-pixel-kind="text"><span class="material-symbols-outlined">check</span></div>
+            <span class="text-lg font-bold" data-pixel-id="fmll9" data-pixel-kind="text">Better margins for all</span>
+          </div>
+        </div>
+      </div>
+      <div data-animation-on-scroll="" class="bg-white/5 rounded-3xl p-8 border border-white/10 backdrop-blur-sm">
+        <!-- Dashboard Simulation -->
+        <div class="space-y-6">
+          <div class="flex justify-between items-center" data-pixel-id="svxlu" data-pixel-kind="text">
+            <span class="text-xs font-bold text-white/40 uppercase">Cluster Efficiency Graph</span>
+            <span class="text-xs font-bold text-success">+31% Efficiency</span>
+          </div>
+          <div class="h-40 flex items-end gap-3">
+            <div class="flex-1 bg-white/10 rounded-t-lg h-1/2"></div>
+            <div class="flex-1 bg-white/10 rounded-t-lg h-2/3"></div>
+            <div class="flex-1 bg-white/10 rounded-t-lg h-1/2"></div>
+            <div class="flex-1 bg-brand-primary rounded-t-lg h-full animate-pulse"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+              <p class="text-[10px] text-white/40 uppercase mb-1" data-pixel-id="uva28" data-pixel-kind="text">Emissions Reduced</p>
+              <p class="text-xl font-bold" data-pixel-id="9mvvi" data-pixel-kind="text">1.2 Tons</p>
+            </div>
+            <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+              <p class="text-[10px] text-white/40 uppercase mb-1" data-pixel-id="6b6s6" data-pixel-kind="text">Fuel Saved</p>
+              <p class="text-xl font-bold" data-pixel-id="8olub" data-pixel-kind="text">480 Liters</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="py-20 px-6 bg-white">
+  <div class="max-w-[1120px] mx-auto">
+    <div data-animation-on-scroll="" class="mb-12">
+      <h2 class="text-4xl lg:text-6xl font-bold tracking-tight text-text-primary" data-pixel-id="naapv" data-pixel-kind="text">FAQ</h2>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+      <div data-animation-on-scroll="" class="space-y-3">
+        <h4 class="font-bold text-lg" data-pixel-id="3rc2c" data-pixel-kind="text">Is this only for businesses?</h4>
+        <p class="text-text-muted text-sm" data-pixel-id="brtmq" data-pixel-kind="text">No. We serve both B2B industrial movement and B2C brand deliveries for small and large players.</p>
+      </div>
+      <div data-animation-on-scroll="" class="space-y-3">
+        <h4 class="font-bold text-lg" data-pixel-id="mal55" data-pixel-kind="text">Do I need high volume?</h4>
+        <p class="text-text-muted text-sm" data-pixel-id="l0rx6" data-pixel-kind="text">No. Even moderate recurring demand can be optimized through our shared network model.</p>
+      </div>
+      <div data-animation-on-scroll="" class="space-y-3">
+        <h4 class="font-bold text-lg" data-pixel-id="yyx73" data-pixel-kind="text">What if no clustering is possible?</h4>
+        <p class="text-text-muted text-sm" data-pixel-id="y3eih" data-pixel-kind="text">Dedicated movement options remain available through our reliable network of transport partners.</p>
+      </div>
+      <div data-animation-on-scroll="" class="space-y-3">
+        <h4 class="font-bold text-lg" data-pixel-id="gn53r" data-pixel-kind="text">Which cities do you serve?</h4>
+        <p class="text-text-muted text-sm" data-pixel-id="x5der" data-pixel-kind="text">We are currently expanding cluster by cluster across major metropolitan logistics hubs.</p>
+      </div>
+      <div data-animation-on-scroll="" class="space-y-3">
+        <h4 class="font-bold text-lg" data-pixel-id="exps0" data-pixel-kind="text">Can I track shipments?</h4>
+        <p class="text-text-muted text-sm" data-pixel-id="v8917" data-pixel-kind="text">Yes, full visibility and status updates are provided throughout the movement cycle via our dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pilot" class="py-20 px-6">
+  <div class="max-w-[1120px] mx-auto">
+    <div class="bg-brand-primary rounded-[40px] p-8 md:p-16 text-white relative overflow-hidden shadow-2xl flex flex-col md:flex-row items-center gap-12">
+      <div class="absolute inset-0 dot-pattern opacity-10"></div>
+      <div class="relative z-10 flex-1 flex flex-col gap-6">
+        <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]" data-pixel-id="9o264" data-pixel-kind="text">
+          Start With a Pilot
+        </h2>
+        <p class="text-white/80 text-lg max-w-md" data-pixel-id="arwir" data-pixel-kind="text">
+          Launch in one cluster, one route, or one city zone. Ideal for industrial areas, retail clusters, and D2C dense regions.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center gap-4" data-pixel-id="yovkr" data-pixel-kind="text">
+          <a href="#" class="btn-press click-feedback bg-white text-brand-primary px-8 py-4 rounded-xl font-bold text-sm shadow-xl w-full sm:w-auto text-center" data-pixel-id="gxy6f" data-pixel-kind="link">
+            Book Your Pilot
+          </a>
+          <a href="#" class="text-white font-bold underline decoration-white/20 underline-offset-8" data-pixel-id="bxl5q" data-pixel-kind="link">Talk to our team</a>
+        </div>
+      </div>
+      <div class="relative z-10 shrink-0 hidden md:block">
+        <div class="size-64 bg-white/10 rounded-full flex items-center justify-center border border-white/20 animate-float" data-pixel-id="9a242" data-pixel-kind="text">
+          <span class="material-symbols-outlined !text-8xl">local_shipping</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 px-6 border-t border-border-base bg-white text-center">
+  <div data-animation-on-scroll="" class="max-w-4xl mx-auto flex flex-col gap-8">
+    <h2 class="text-4xl lg:text-7xl font-bold tracking-tight text-text-primary" data-pixel-id="qtrfm" data-pixel-kind="text">Stop Overpaying for Deliveries</h2>
+    <p class="text-text-muted text-xl" data-pixel-id="4pjcl" data-pixel-kind="text">Move smarter with ClusterClub. Join the network of efficient urban logistics.</p>
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-4" data-pixel-id="255yw" data-pixel-kind="text">
+       <a href="#pilot" class="btn-press click-feedback brand-pink-gradient custom-button-shadow text-white px-10 py-4 rounded-xl font-bold text-base shadow-cta w-full sm:w-auto" data-pixel-id="rkhnh" data-pixel-kind="link">Start Pilot Now</a>
+       <a href="#" class="btn-press click-feedback border border-border-base px-10 py-4 rounded-xl font-bold text-base w-full sm:w-auto" data-pixel-id="5l9p0" data-pixel-kind="link">Request Pricing</a>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Scroll animations handled by layout
+});
+</script></main>
+
+    <footer id="landing-footer" class="flex w-full border-t border-border-base pt-[72px] pb-[40px] bg-neutral-background text-text-primary">
+      <div class="mx-auto flex w-full max-w-[1120px] flex-col gap-12 px-6">
+        <div class="grid gap-10 grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+          <div class="col-span-2">
+            <a class="text-xl font-bold tracking-tighter text-text-primary flex items-center gap-2 mb-4" href="#" data-pixel-id="15xfa" data-pixel-kind="link">
+              <span class="material-symbols-outlined text-brand-primary">hub</span>
+              ClusterClub
+            </a>
+            <p class="text-text-muted text-sm max-w-xs" data-pixel-id="n6c82" data-pixel-kind="text">Shared Logistics. Lower Costs. Smarter Movement. Optimizing urban deliveries through intelligent clustering.</p>
+          </div>
+          <div>
+            <h4 class="text-base font-medium mb-4" data-pixel-id="6jfbv" data-pixel-kind="text">Company</h4>
+            <ul class="space-y-2 text-sm text-text-muted">
+              <li data-pixel-id="3e1rk" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="kt6yq" data-pixel-kind="link">About</a></li>
+              <li data-pixel-id="mjirh" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="xv7wy" data-pixel-kind="link">Careers</a></li>
+              <li data-pixel-id="xjxkr" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="7ovpn" data-pixel-kind="link">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-base font-medium mb-4" data-pixel-id="k5j52" data-pixel-kind="text">Legal</h4>
+            <ul class="space-y-2 text-sm text-text-muted">
+              <li data-pixel-id="tnycx" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="fobeq" data-pixel-kind="link">Privacy</a></li>
+              <li data-pixel-id="fswb2" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="2mh56" data-pixel-kind="link">Terms</a></li>
+              <li data-pixel-id="2ulwf" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="ps3po" data-pixel-kind="link">Cookie Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-base font-medium mb-4" data-pixel-id="ez9f2" data-pixel-kind="text">Social</h4>
+            <ul class="space-y-2 text-sm text-text-muted">
+              <li data-pixel-id="zyl3u" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="5f6lp" data-pixel-kind="link">LinkedIn</a></li>
+              <li data-pixel-id="aslaf" data-pixel-kind="text"><a href="#" class="hover:text-text-primary transition-colors" data-pixel-id="van4e" data-pixel-kind="link">Twitter</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-8 border-t border-border-base flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-xs text-text-muted" data-pixel-id="cxo70" data-pixel-kind="text">© 2024 ClusterClub. All rights reserved.</p>
+          <div class="flex gap-6" data-pixel-id="b8g8f" data-pixel-kind="text">
+            <span class="text-[10px] font-bold text-success flex items-center gap-1">
+              <span class="size-1.5 rounded-full bg-success animate-pulse"></span>
+              ALL SYSTEMS OPERATIONAL
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const mobileTrigger = document.getElementById('mobile-menu-trigger');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const openIcon = document.getElementById('menu-icon-open');
+      const closeIcon = document.getElementById('menu-icon-close');
+      const body = document.body;
+
+      if (mobileTrigger && mobileMenu) {
+        mobileTrigger.addEventListener('click', () => {
+          const isHidden = mobileMenu.classList.contains('hidden');
+          if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            openIcon.classList.add('hidden');
+            closeIcon.classList.remove('hidden');
+            body.style.overflow = 'hidden';
+          } else {
+            mobileMenu.classList.add('hidden');
+            openIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+            body.style.overflow = '';
+          }
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            openIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+            body.style.overflow = '';
+          });
+        });
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-on-scroll-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('[data-animation-on-scroll]').forEach(el => {
+        el.classList.add('animate-on-scroll-hidden');
+        observer.observe(el);
+      });
+
+      function createRipple(event) {
+        const button = event.currentTarget;
+        const circle = document.createElement("span");
+        const diameter = Math.max(button.clientWidth, button.clientHeight);
+        const radius = diameter / 2;
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+        circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+        circle.classList.add("ripple");
+        const ripple = button.getElementsByClassName("ripple")[0];
+        if (ripple) { ripple.remove(); }
+        button.appendChild(circle);
+      }
+      document.querySelectorAll('.click-feedback').forEach(btn => {
+        btn.addEventListener('click', createRipple);
+      });
+    });
+  </script>
+
+
+    <script src="https://api.landinghero.ai/public/assistant-widget.js" data-lh-assistant-widget="true" data-project-id="SSv45W7PWogasiHGjIzv"></script>
+
+    <script id="lh-website-form-handler" data-lh-form-handler="true">
+    (function() {
+      if (window.__lhWebsiteFormHandlerInitialized) return;
+      window.__lhWebsiteFormHandlerInitialized = true;
+
+      var PROJECT_ID = "SSv45W7PWogasiHGjIzv";
+      var DEFAULT_SUCCESS_MESSAGE = 'Thanks. Your message has been sent.';
+      var DEFAULT_ERROR_MESSAGE = 'Could not submit the form. Please try again.';
+
+      function isLocalHostname(hostname) {
+        var normalized = String(hostname || '').trim().toLowerCase();
+        return normalized === 'localhost' || normalized === '127.0.0.1';
+      }
+
+      function readHostnameFromUrl(url) {
+        if (!url) return '';
+
+        try {
+          return String(new URL(url).hostname || '').trim().toLowerCase();
+        } catch (_) {
+          return '';
+        }
+      }
+
+      function detectApiBaseUrl() {
+        try {
+          var hostname = window.location.hostname || '';
+          if (isLocalHostname(hostname)) {
+            return 'http://localhost:8080/api';
+          }
+        } catch (_) {}
+
+        try {
+          var baseHostname = readHostnameFromUrl(document.baseURI || '');
+          if (isLocalHostname(baseHostname)) {
+            return 'http://localhost:8080/api';
+          }
+        } catch (_) {}
+
+        try {
+          var parentHostname =
+            window.parent && window.parent !== window && window.parent.location
+              ? String(window.parent.location.hostname || '').trim().toLowerCase()
+              : '';
+          if (isLocalHostname(parentHostname)) {
+            return 'http://localhost:8080/api';
+          }
+        } catch (_) {}
+
+        return 'https://api.landinghero.ai/api';
+      }
+
+      var API_BASE_URL = detectApiBaseUrl();
+
+      function getFeedbackNode(form) {
+        var feedback = form.nextElementSibling;
+        if (
+          feedback &&
+          feedback.nodeType === 1 &&
+          feedback.getAttribute('data-lh-form-feedback') === 'true'
+        ) {
+          return feedback;
+        }
+
+        feedback = document.createElement('div');
+        feedback.setAttribute('data-lh-form-feedback', 'true');
+        feedback.setAttribute('aria-live', 'polite');
+        feedback.style.marginTop = '12px';
+        feedback.style.padding = '12px 14px';
+        feedback.style.borderRadius = '10px';
+        feedback.style.fontSize = '14px';
+        feedback.style.lineHeight = '1.5';
+        feedback.style.display = 'none';
+        form.insertAdjacentElement('afterend', feedback);
+        return feedback;
+      }
+
+      function setFeedback(form, kind, message) {
+        var feedback = getFeedbackNode(form);
+        feedback.textContent = message || '';
+        feedback.style.display = message ? 'block' : 'none';
+        feedback.style.border = kind === 'success'
+          ? '1px solid rgba(16, 185, 129, 0.25)'
+          : '1px solid rgba(239, 68, 68, 0.25)';
+        feedback.style.background = kind === 'success'
+          ? 'rgba(16, 185, 129, 0.08)'
+          : 'rgba(239, 68, 68, 0.08)';
+        feedback.style.color = kind === 'success' ? '#065f46' : '#991b1b';
+      }
+
+      function isElementVisible(element) {
+        if (!element) return false;
+        if (element.type === 'hidden') return false;
+
+        try {
+          var style = window.getComputedStyle(element);
+          if (
+            style.display === 'none' ||
+            style.visibility === 'hidden' ||
+            Number(style.opacity || '1') === 0
+          ) {
+            return false;
+          }
+        } catch (_) {}
+
+        if (typeof element.getClientRects === 'function') {
+          return element.getClientRects().length > 0;
+        }
+
+        return true;
+      }
+
+      function getFieldLabel(form, element) {
+        var ariaLabel = String(element.getAttribute('aria-label') || '').trim();
+        if (ariaLabel) return ariaLabel;
+
+        var labels = element.labels;
+        if (labels && labels.length > 0) {
+          var joined = Array.prototype.map.call(labels, function(label) {
+            return String(label.textContent || '').trim();
+          }).filter(Boolean).join(' ');
+          if (joined) return joined;
+        }
+
+        var id = String(element.id || '').trim();
+        if (id) {
+          try {
+            var escapedId =
+              typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+                ? CSS.escape(id)
+                : id.replace(/"/g, '\"');
+            var explicitLabel = form.querySelector('label[for="' + escapedId + '"]');
+            if (explicitLabel) {
+              var explicitText = String(explicitLabel.textContent || '').trim();
+              if (explicitText) return explicitText;
+            }
+          } catch (_) {}
+        }
+
+        var parentLabel = typeof element.closest === 'function'
+          ? element.closest('label')
+          : null;
+        if (parentLabel) {
+          var parentText = String(parentLabel.textContent || '').trim();
+          if (parentText) return parentText;
+        }
+
+        var parentElement = element.parentElement;
+        if (parentElement) {
+          var siblingLabel = parentElement.querySelector('label');
+          if (siblingLabel) {
+            var siblingLabelText = String(siblingLabel.textContent || '').trim();
+            if (siblingLabelText) return siblingLabelText;
+          }
+        }
+
+        var previousSibling = element.previousElementSibling;
+        while (previousSibling) {
+          if (String(previousSibling.tagName || '').toLowerCase() === 'label') {
+            var previousSiblingText = String(previousSibling.textContent || '').trim();
+            if (previousSiblingText) return previousSiblingText;
+          }
+          previousSibling = previousSibling.previousElementSibling;
+        }
+
+        var placeholder = String(element.getAttribute('placeholder') || '').trim();
+        if (placeholder) return placeholder;
+
+        return String(element.name || element.id || element.type || 'field').trim();
+      }
+
+      function addDataValue(data, name, value) {
+        if (!name) return;
+
+        if (Object.prototype.hasOwnProperty.call(data, name)) {
+          if (Array.isArray(data[name])) {
+            data[name].push(value);
+          } else {
+            data[name] = [data[name], value];
+          }
+          return;
+        }
+
+        data[name] = value;
+      }
+
+      function normalizeFieldType(element) {
+        var tagName = String(element.tagName || '').toLowerCase();
+        if (tagName === 'textarea') return 'textarea';
+        if (tagName === 'select') return 'select';
+        return String(element.type || tagName || 'text').toLowerCase();
+      }
+
+      function getFieldValue(element) {
+        var type = normalizeFieldType(element);
+
+        if (type === 'checkbox' || type === 'radio') {
+          return element.checked ? 'true' : '';
+        }
+
+        if (type === 'file') {
+          if (!element.files || !element.files.length) return '';
+          return Array.prototype.map.call(element.files, function(file) {
+            return file && file.name ? file.name : '';
+          }).filter(Boolean).join(', ');
+        }
+
+        if (element.tagName && String(element.tagName).toLowerCase() === 'select' && element.multiple) {
+          return Array.prototype.map.call(element.selectedOptions || [], function(option) {
+            return option && option.value ? option.value : '';
+          }).filter(Boolean).join(', ');
+        }
+
+        return String(element.value || '').trim();
+      }
+
+      function collectFormPayload(form) {
+        var fields = [];
+        var data = {};
+        var elements = form.querySelectorAll('input, textarea, select');
+
+        Array.prototype.forEach.call(elements, function(element, index) {
+          if (!element || element.disabled) return;
+          if (!isElementVisible(element)) return;
+
+          var type = normalizeFieldType(element);
+          if (
+            type === 'submit' ||
+            type === 'button' ||
+            type === 'reset' ||
+            type === 'image'
+          ) {
+            return;
+          }
+
+          if ((type === 'checkbox' || type === 'radio') && !element.checked) {
+            return;
+          }
+
+          var value = getFieldValue(element);
+          if (!value) return;
+
+          var name = String(element.name || element.id || ('field_' + index)).trim();
+          if (!name) return;
+
+          fields.push({
+            name: name,
+            label: getFieldLabel(form, element),
+            type: type,
+            value: value
+          });
+          addDataValue(data, name, value);
+        });
+
+        return { fields: fields, data: data };
+      }
+
+      function getPageUrl() {
+        try {
+          if (window.location.href && window.location.href !== 'about:srcdoc') {
+            return window.location.href;
+          }
+        } catch (_) {}
+
+        try {
+          return String(document.baseURI || '').trim();
+        } catch (_) {
+          return '';
+        }
+      }
+
+      function setSubmittingState(form, isSubmitting) {
+        var submitControls = form.querySelectorAll(
+          'button[type="submit"], input[type="submit"], input[type="image"], [data-pixel-form-submit="true"]'
+        );
+
+        Array.prototype.forEach.call(submitControls, function(control) {
+          if (!(control instanceof HTMLElement)) return;
+
+          if (isSubmitting) {
+            if (!control.hasAttribute('data-lh-original-disabled')) {
+              control.setAttribute(
+                'data-lh-original-disabled',
+                control.hasAttribute('disabled') ? 'true' : 'false'
+              );
+            }
+            control.setAttribute('disabled', 'disabled');
+          } else if (control.getAttribute('data-lh-original-disabled') === 'false') {
+            control.removeAttribute('disabled');
+          }
+
+          if (control.tagName.toLowerCase() === 'button') {
+            if (isSubmitting) {
+              if (!control.hasAttribute('data-lh-original-label')) {
+                control.setAttribute(
+                  'data-lh-original-label',
+                  String(control.textContent || '')
+                );
+              }
+              control.textContent = 'Sending...';
+            } else if (control.hasAttribute('data-lh-original-label')) {
+              control.textContent = control.getAttribute('data-lh-original-label') || '';
+              control.removeAttribute('data-lh-original-label');
+            }
+          } else if (control.tagName.toLowerCase() === 'input') {
+            if (isSubmitting) {
+              if (!control.hasAttribute('data-lh-original-label')) {
+                control.setAttribute(
+                  'data-lh-original-label',
+                  String(control.getAttribute('value') || '')
+                );
+              }
+              control.setAttribute('value', 'Sending...');
+            } else if (control.hasAttribute('data-lh-original-label')) {
+              control.setAttribute(
+                'value',
+                control.getAttribute('data-lh-original-label') || ''
+              );
+              control.removeAttribute('data-lh-original-label');
+            }
+          }
+
+          if (!isSubmitting) {
+            control.removeAttribute('data-lh-original-disabled');
+          }
+        });
+      }
+
+      async function handleLandingHeroSubmit(payload) {
+        return fetch(API_BASE_URL + '/projects/forms/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      async function handleWebhookSubmit(url, payload) {
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      document.addEventListener('submit', async function(event) {
+        var form = event.target;
+        if (!(form instanceof HTMLFormElement)) return;
+        if (!PROJECT_ID) return;
+        if (form.__lhFormSubmitting) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        var payload = collectFormPayload(form);
+        if (!payload.fields.length) {
+          setFeedback(form, 'error', 'Please complete the form before submitting.');
+          return;
+        }
+
+        form.__lhFormSubmitting = true;
+        setSubmittingState(form, true);
+        setFeedback(form, 'success', '');
+
+        var mode = String(form.getAttribute('data-lh-form-mode') || 'landinghero')
+          .trim()
+          .toLowerCase() === 'webhook'
+          ? 'webhook'
+          : 'landinghero';
+
+        var requestPayload = {
+          project_id: PROJECT_ID,
+          projectId: PROJECT_ID,
+          submittedAt: new Date().toISOString(),
+          pageUrl: getPageUrl(),
+          form: {
+            pixelId: String(form.getAttribute('data-pixel-id') || '').trim()
+          },
+          fields: payload.fields,
+          data: payload.data
+        };
+
+        try {
+          var response;
+
+          if (mode === 'webhook') {
+            var webhookUrl = String(form.getAttribute('data-lh-form-webhook-url') || '').trim();
+            if (!webhookUrl) {
+              throw new Error('Webhook URL is not configured for this form.');
+            }
+            response = await handleWebhookSubmit(webhookUrl, requestPayload);
+          } else {
+            requestPayload.recipientEmail = String(
+              form.getAttribute('data-lh-form-recipient-email') || ''
+            ).trim();
+            response = await handleLandingHeroSubmit(requestPayload);
+          }
+
+          if (!response.ok) {
+            var errorMessage = DEFAULT_ERROR_MESSAGE;
+            try {
+              var errorBody = await response.json();
+              if (errorBody && errorBody.error) {
+                errorMessage = String(errorBody.error);
+              }
+            } catch (_) {}
+            throw new Error(errorMessage);
+          }
+
+          setFeedback(form, 'success', DEFAULT_SUCCESS_MESSAGE);
+          form.reset();
+        } catch (error) {
+          setFeedback(
+            form,
+            'error',
+            error && error.message ? error.message : DEFAULT_ERROR_MESSAGE
+          );
+        } finally {
+          form.__lhFormSubmitting = false;
+          setSubmittingState(form, false);
+        }
+      }, true);
+    })();
+  </script>
+</body></html>
