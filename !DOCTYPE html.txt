@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster Club — Intro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #F5F0E8;
+    --blue: #1A3FCB;
+    --cyan: #0A7EA4;
+    --orange: #D94F1E;
+    --green: #0F7B5A;
+    --white: #1C1C1E;
+    --mid: #6B5E4E;
+    --card: #EDE8DF;
+    --border: rgba(26,63,203,0.15);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--navy);
+    overflow: hidden;
+    font-family: 'Syne', sans-serif;
+    color: var(--white);
+  }
+
+  /* ── SCENE SYSTEM ───────────────────────────── */
+  .scene {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .scene.active { opacity: 1; pointer-events: all; }
+
+  /* ── SHARED GRID LINES ──────────────────────── */
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(26,63,203,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,63,203,.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* ── SCENE 1: BRAND INTRO ───────────────────── */
+  #s1 { flex-direction: column; text-align: center; }
+
+  .logo-ring {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; margin-bottom: 32px;
+    animation: ring-pulse 3s ease-in-out infinite;
+  }
+  .logo-ring::before {
+    content: '';
+    position: absolute; inset: -12px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,63,203,.25);
+    animation: ring-pulse 3s ease-in-out infinite 0.5s;
+  }
+  .logo-ring::after {
+    content: '';
+    position: absolute; inset: -24px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,63,203,.12);
+    animation: ring-pulse 3s ease-in-out infinite 1s;
+  }
+  @keyframes ring-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.04); opacity: 0.7; }
+  }
+
+  .logo-icon { font-size: 52px; }
+
+  .s1-brand {
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    overflow: hidden;
+  }
+  .s1-brand span { display: inline-block; }
+  .s1-brand .cl { color: var(--white); }
+  .s1-brand .log { color: var(--green); }
+
+  .s1-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(11px, 1.5vw, 14px);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-top: 16px;
+    overflow: hidden;
+  }
+
+  /* ── SCENE 2: PROBLEM ───────────────────────── */
+  #s2 { flex-direction: column; padding: 48px; text-align: center; }
+
+  .problem-stat {
+    display: flex; gap: 60px; margin-bottom: 48px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--mid);
+    text-transform: uppercase;
+    margin-top: 8px;
+    max-width: 140px;
+  }
+
+  .problem-headline {
+    font-size: clamp(24px, 4vw, 42px);
+    font-weight: 700;
+    max-width: 720px;
+    line-height: 1.2;
+  }
+  .problem-headline em { color: var(--cyan); font-style: normal; }
+
+  /* ── SCENE 3: SOLUTION ──────────────────────── */
+  #s3 { padding: 48px; }
+  .solution-wrap { display: flex; gap: 48px; align-items: center; max-width: 1000px; width: 100%; flex-wrap: wrap; justify-content: center; }
+
+  .map-visual {
+    width: 380px; height: 340px;
+    position: relative; flex-shrink: 0;
+  }
+
+  /* nodes */
+  .node {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .node.pickup { background: var(--orange); box-shadow: 0 0 10px rgba(217,79,30,.4); }
+  .node.drop { background: var(--cyan); box-shadow: 0 0 10px rgba(10,126,164,.4); }
+  .node.hub {
+    width: 22px; height: 22px;
+    background: var(--blue);
+    box-shadow: 0 0 16px rgba(26,63,203,.4);
+    border: 2px solid var(--card);
+  }
+
+  /* cluster circles */
+  .cluster-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px dashed;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  svg.connections {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  .sol-text { max-width: 440px; }
+  .sol-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 16px;
+  }
+  .sol-headline {
+    font-size: clamp(26px, 3.5vw, 42px);
+    font-weight: 800; line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  .sol-points { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .sol-points li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 15px; color: var(--mid); line-height: 1.5;
+  }
+  .sol-points li::before {
+    content: '→';
+    color: var(--cyan);
+    font-family: 'Space Mono', monospace;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── SCENE 4: HOW IT WORKS ──────────────────── */
+  #s4 { flex-direction: column; padding: 48px; text-align: center; }
+  .how-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 40px;
+  }
+  .steps { display: flex; gap: 0; align-items: stretch; flex-wrap: wrap; justify-content: center; max-width: 920px; }
+  .step {
+    flex: 1; min-width: 180px; max-width: 220px;
+    padding: 28px 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    position: relative;
+    transition: border-color 0.3s, background 0.3s;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -18px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--blue);
+    font-size: 20px; z-index: 1;
+  }
+  .step.reveal { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, background 0.3s; }
+  .step:hover { border-color: var(--cyan); background: rgba(10,126,164,.06); }
+  .step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--blue); letter-spacing: 2px; margin-bottom: 12px;
+  }
+  .step-icon { font-size: 32px; margin-bottom: 12px; }
+  .step-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .step-desc { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+  /* ── SCENE 5: DELIVERY ACCURACY ─────────────── */
+  #s5 { flex-direction: column; padding: 48px; text-align: center; }
+  .acc-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800; margin-bottom: 8px;
+  }
+  .acc-title span { color: var(--orange); }
+  .acc-sub { color: var(--mid); font-size: 15px; margin-bottom: 48px; }
+
+  .layers { display: flex; flex-direction: column; gap: 0; max-width: 640px; width: 100%; }
+  .layer {
+    display: flex; align-items: center; gap: 20px;
+    padding: 16px 24px;
+    background: var(--card);
+    border-left: 3px solid transparent;
+    opacity: 0; transform: translateX(-40px);
+    transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.3s, background 0.3s;
+  }
+  .layer.reveal { opacity: 1; transform: translateX(0); border-left-color: var(--blue); }
+  .layer:hover { background: rgba(26,63,203,.1); border-left-color: var(--cyan); }
+  .layer-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; color: var(--blue); letter-spacing: 2px; flex-shrink: 0; width: 32px;
+  }
+  .layer-icon { font-size: 22px; flex-shrink: 0; }
+  .layer-text { text-align: left; }
+  .layer-name { font-size: 15px; font-weight: 700; }
+  .layer-desc { font-size: 12px; color: var(--mid); margin-top: 2px; }
+
+  /* ── SCENE 6: NUMBERS ───────────────────────── */
+  #s6 { flex-direction: column; padding: 48px; text-align: center; }
+  .numbers-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 48px;
+  }
+  .big-numbers { display: flex; gap: 0; flex-wrap: wrap; justify-content: center; max-width: 900px; }
+  .big-num {
+    flex: 1; min-width: 180px;
+    padding: 40px 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    opacity: 0; transform: scale(0.85);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .big-num.reveal { opacity: 1; transform: scale(1); }
+  .big-num:hover { background: rgba(26,63,203,.08); }
+  .big-val {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800; line-height: 1;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .big-unit { font-size: 18px; font-weight: 800; color: var(--mid); }
+  .big-desc { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; margin-top: 12px; }
+
+  /* ── SCENE 7: FINAL CTA ─────────────────────── */
+  #s7 { flex-direction: column; text-align: center; }
+  .final-tagline {
+    font-size: clamp(32px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.1;
+    max-width: 800px;
+    overflow: hidden;
+  }
+  .final-tagline .line { overflow: hidden; }
+  .final-tagline .line span { display: block; }
+  .final-tagline .accent { color: var(--green); }
+  .final-cta {
+    margin-top: 40px;
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  }
+  .btn-primary {
+    padding: 16px 40px;
+    background: var(--blue);
+    color: #F5F0E8;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+    border: none; cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s, transform 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-primary:hover { background: #2B52E0; transform: translateY(-2px); }
+  .btn-secondary {
+    padding: 16px 40px;
+    background: transparent;
+    color: var(--cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 14px; font-weight: 700;
+    border: 1px solid var(--cyan); cursor: pointer;
+    letter-spacing: 2px; text-transform: uppercase;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(10,126,164,.1); transform: translateY(-2px); }
+
+  /* ── PROGRESS BAR ───────────────────────────── */
+  .progress-bar {
+    position: fixed; bottom: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--green));
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* ── SCENE DOTS ─────────────────────────────── */
+  .scene-dots {
+    position: fixed; right: 24px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 10px;
+    z-index: 100;
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(26,63,203,.25);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .dot.active { background: var(--green); transform: scale(1.5); }
+
+  /* ── NAV ARROWS ─────────────────────────────── */
+  .nav-btn {
+    position: fixed; bottom: 32px;
+    background: rgba(26,63,203,.12);
+    border: 1px solid rgba(26,63,203,.3);
+    color: var(--blue); font-size: 18px;
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 100;
+    transition: background 0.2s;
+    font-family: 'Space Mono', monospace;
+  }
+  .nav-btn:hover { background: rgba(26,63,203,.22); }
+  #nav-prev { left: calc(50% - 56px); }
+  #nav-next { left: calc(50% + 8px); }
+
+  /* ── AMBIENT PARTICLES ──────────────────────── */
+  .particle {
+    position: fixed; border-radius: 50%;
+    pointer-events: none; opacity: 0.15;
+    animation: float-particle linear infinite;
+  }
+  @keyframes float-particle {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.15; }
+    100% { transform: translateY(-100px) translateX(var(--drift)); opacity: 0; }
+  }
+
+  /* ── SCAN LINE EFFECT ───────────────────────── */
+  .scanline {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(15,123,90,.2), transparent);
+    animation: scan 4s linear infinite;
+    pointer-events: none; z-index: 50;
+  }
+  @keyframes scan {
+    0% { top: -2px; }
+    100% { top: 100vh; }
+  }
+
+  /* ── SLIDE TRANSITIONS ──────────────────────── */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(60px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes typeIn {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0% 0 0); }
+  }
+
+  /* ─── RESPONSIVE ────────────────────────────── */
+  @media (max-width: 600px) {
+    .step:not(:last-child)::after { display: none; }
+    .map-visual { width: 300px; height: 270px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+
+<!-- Ambient particles -->
+<div id="particles"></div>
+
+<!-- Progress -->
+<div class="progress-bar" id="progress"></div>
+
+<!-- Scene dots -->
+<div class="scene-dots" id="dots"></div>
+
+<!-- Nav -->
+<button class="nav-btn" id="nav-prev">←</button>
+<button class="nav-btn" id="nav-next">→</button>
+
+<!-- ══ SCENE 1: BRAND ══════════════════════════════ -->
+<div class="scene" id="s1">
+  <div class="logo-ring"><div class="logo-icon">⬡</div></div>
+  <div>
+    <div class="s1-brand">
+      <span class="cl">CLUSTER</span> <span class="log">CLUB</span>
+    </div>
+    <div class="s1-sub">Intelligent B2B Logistics</div>
+  </div>
+</div>
+
+<!-- ══ SCENE 2: PROBLEM ═══════════════════════════ -->
+<div class="scene" id="s2">
+  <div class="problem-stat">
+    <div class="stat-item">
+      <div class="stat-num" data-target="60">0</div>
+      <div class="stat-label">% truck capacity wasted daily</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="5" data-suffix="×">0</div>
+      <div class="stat-label">higher cost per kg vs consolidated freight</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="3000" data-prefix="">0</div>
+      <div class="stat-label">B2B businesses need daily restocking</div>
+    </div>
+  </div>
+  <div class="problem-headline">
+    Every FMCG supplier books a <em>separate truck</em>.<br>
+    Same route. Same destination. <em>Zero coordination.</em>
+  </div>
+</div>
+
+<!-- ══ SCENE 3: SOLUTION ══════════════════════════ -->
+<div class="scene" id="s3">
+  <div class="solution-wrap">
+
+    <!-- Map visual -->
+    <div class="map-visual" id="mapVis">
+      <svg class="connections" id="connSvg"></svg>
+      <!-- Nodes added by JS -->
+    </div>
+
+    <!-- Text -->
+    <div class="sol-text">
+      <div class="sol-label">The Solution</div>
+      <div class="sol-headline">We cluster your shipments.<br>You save 30–40%.</div>
+      <ul class="sol-points">
+        <li>ML engine groups nearby pickups & drops into shared-load routes</li>
+        <li>Network optimization minimizes vehicle-km per kg delivered</li>
+        <li>Multiple clients. One truck. Everyone wins.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCENE 4: HOW IT WORKS ══════════════════════ -->
+<div class="scene" id="s4">
+  <div class="how-title">How It Works</div>
+  <div class="steps">
+    <div class="step" id="step1">
+      <div class="step-num">01</div>
+      <div class="step-icon">📦</div>
+      <div class="step-name">Book</div>
+      <div class="step-desc">Submit shipment via app, API, or WhatsApp</div>
+    </div>
+    <div class="step" id="step2">
+      <div class="step-num">02</div>
+      <div class="step-icon">🧠</div>
+      <div class="step-name">Cluster</div>
+      <div class="step-desc">ML engine groups nearby orders by zone & time window</div>
+    </div>
+    <div class="step" id="step3">
+      <div class="step-num">03</div>
+      <div class="step-icon">🗺️</div>
+      <div class="step-name">Optimize</div>
+      <div class="step-desc">Route solver finds minimum-cost stop sequence</div>
+    </div>
+    <div class="step" id="step4">
+      <div class="step-num">04</div>
+      <div class="step-icon">🚚</div>
+      <div class="step-name">Dispatch</div>
+      <div class="step-desc">Shared truck departs with QR-tagged manifests</div>
+    </div>
+    <div class="step" id="step5">
+      <div class="step-num">05</div>
+      <div class="step-icon">✅</div>
+      <div class="step-name">Deliver</div>
+      <div class="step-desc">QR scan confirms right parcel at right door</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCENE 5: DELIVERY ACCURACY ════════════════ -->
+<div class="scene" id="s5">
+  <div class="acc-title">Zero Misdirections.<br><span>5-Layer Accuracy.</span></div>
+  <div class="acc-sub">Every parcel verified at every step — from warehouse to doorstep.</div>
+  <div class="layers">
+    <div class="layer" id="l1">
+      <div class="layer-num">L1</div>
+      <div class="layer-icon">🎨</div>
+      <div class="layer-text">
+        <div class="layer-name">Zone Color Coding</div>
+        <div class="layer-desc">Every delivery zone gets a unique color — visual confirmation at loading</div>
+      </div>
+    </div>
+    <div class="layer" id="l2">
+      <div class="layer-num">L2</div>
+      <div class="layer-icon">📋</div>
+      <div class="layer-text">
+        <div class="layer-name">Digital Manifest Scan</div>
+        <div class="layer-desc">100% QR scan verification before truck gate-out</div>
+      </div>
+    </div>
+    <div class="layer" id="l3">
+      <div class="layer-num">L3</div>
+      <div class="layer-icon">🔒</div>
+      <div class="layer-text">
+        <div class="layer-name">Sequential Stop Unlock</div>
+        <div class="layer-desc">Driver app shows only current stop's parcels — others locked</div>
+      </div>
+    </div>
+    <div class="layer" id="l4">
+      <div class="layer-num">L4</div>
+      <div class="layer-icon">📲</div>
+      <div class="layer-text">
+        <div class="layer-name">Recipient OTP Confirmation</div>
+        <div class="layer-desc">Consignee confirms receipt via OTP before delivery is logged</div>
+      </div>
+    </div>
+    <div class="layer" id="l5">
+      <div class="layer-num">L5</div>
+      <div class="layer-icon">🤖</div>
+      <div class="layer-text">
+        <div class="layer-name">AI Anomaly Detection</div>
+        <div class="layer-desc">Real-time geofence alerts if a parcel strays from its zone</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCENE 6: NUMBERS ═══════════════════════════ -->
+<div class="scene" id="s6">
+  <div class="numbers-label">The Opportunity</div>
+  <div class="big-numbers">
+    <div class="big-num" id="bn1">
+      <div class="big-val">₹52K<span class="big-unit">Cr</span></div>
+      <div class="big-desc">Total Addressable Market</div>
+    </div>
+    <div class="big-num" id="bn2">
+      <div class="big-val">40<span class="big-unit">%</span></div>
+      <div class="big-desc">Cost Savings for Clients</div>
+    </div>
+    <div class="big-num" id="bn3">
+      <div class="big-val">3K<span class="big-unit">+</span></div>
+      <div class="big-desc">B2B Clients to Serve</div>
+    </div>
+    <div class="big-num" id="bn4">
+      <div class="big-val">65<span class="big-unit">%</span></div>
+      <div class="big-desc">Gross Margin at Scale</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCENE 7: FINAL CTA ═════════════════════════ -->
+<div class="scene" id="s7">
+  <div class="final-tagline">
+    <div class="line"><span id="fl1">Move More.</span></div>
+    <div class="line"><span id="fl2" class="accent">Spend Less.</span></div>
+    <div class="line"><span id="fl3">Join the Club.</span></div>
+  </div>
+  <div class="final-cta">
+    <button class="btn-primary">Get Started →</button>
+    <button class="btn-secondary">Watch Demo</button>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────
+const TOTAL_SCENES = 7;
+let current = 0;
+let animating = false;
+let autoTimer = null;
+
+// ── PARTICLES ─────────────────────────────────────
+const pc = document.getElementById('particles');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 4 + 2;
+  p.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}vw;
+    background:${Math.random()>.6 ? '#1A3FCB' : Math.random()>.5 ? '#0A7EA4' : '#0F7B5A'};
+    animation-duration:${8+Math.random()*12}s;
+    animation-delay:${-Math.random()*20}s;
+    --drift:${(Math.random()-0.5)*120}px;
+  `;
+  pc.appendChild(p);
+}
+
+// ── DOTS ──────────────────────────────────────────
+const dotsEl = document.getElementById('dots');
+for (let i = 0; i < TOTAL_SCENES; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.addEventListener('click', ()=>goTo(i));
+  dotsEl.appendChild(d);
+}
+
+// ── PROGRESS ──────────────────────────────────────
+function setProgress(n) {
+  document.getElementById('progress').style.width = ((n+1)/TOTAL_SCENES*100)+'%';
+}
+
+// ── GOTO SCENE ────────────────────────────────────
+function goTo(n) {
+  if (animating || n === current) return;
+  animating = true;
+
+  const prev = document.getElementById('s'+(current+1));
+  const next = document.getElementById('s'+(n+1));
+
+  prev.classList.remove('active');
+  setTimeout(()=>{
+    next.classList.add('active');
+    current = n;
+    updateDots();
+    setProgress(n);
+    runSceneAnimation(n);
+    setTimeout(()=>{ animating = false; }, 700);
+  }, 400);
+
+  resetAutoTimer();
+}
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active', i===current);
+  });
+}
+
+document.getElementById('nav-next').addEventListener('click', ()=>{
+  if (current < TOTAL_SCENES-1) goTo(current+1);
+});
+document.getElementById('nav-prev').addEventListener('click', ()=>{
+  if (current > 0) goTo(current-1);
+});
+
+// Keyboard
+document.addEventListener('keydown', e=>{
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') { if(current<TOTAL_SCENES-1) goTo(current+1); }
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp')   { if(current>0) goTo(current-1); }
+});
+
+// ── AUTO ADVANCE ──────────────────────────────────
+function resetAutoTimer() {
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(()=>{
+    if (current < TOTAL_SCENES-1) goTo(current+1);
+  }, 5000);
+}
+
+// ── SCENE ANIMATIONS ──────────────────────────────
+function runSceneAnimation(n) {
+  if (n === 1) animateStats();
+  if (n === 2) animateMap();
+  if (n === 3) animateSteps();
+  if (n === 4) animateLayers();
+  if (n === 5) animateBigNums();
+  if (n === 6) animateFinal();
+}
+
+// Scene 2: counter stats
+function animateStats() {
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix || '';
+    let start = 0;
+    const dur = 1400;
+    const step = 16;
+    const inc = target / (dur/step);
+    const timer = setInterval(()=>{
+      start = Math.min(start+inc, target);
+      const val = target >= 1000 ? Math.round(start).toLocaleString() : Math.round(start*10)/10;
+      el.textContent = val + suffix;
+      if (start >= target) clearInterval(timer);
+    }, step);
+  });
+}
+
+// Scene 3: map clustering animation
+function animateMap() {
+  const vis = document.getElementById('mapVis');
+  const svg = document.getElementById('connSvg');
+  // Clear previous
+  vis.querySelectorAll('.node,.cluster-circle').forEach(e=>e.remove());
+  svg.innerHTML = '';
+
+  const W = vis.offsetWidth, H = vis.offsetHeight;
+
+  // Define clusters
+  const clusters = [
+    { cx: 0.25, cy: 0.35, r: 0.22, color: '#D94F1E22', stroke: '#D94F1E',
+      nodes: [{x:.15,y:.2},{x:.28,y:.4},{x:.2,y:.55},{x:.35,y:.3}] },
+    { cx: 0.72, cy: 0.5, r: 0.24, color: '#0A7EA415', stroke: '#0A7EA4',
+      nodes: [{x:.6,y:.35},{x:.78,y:.28},{x:.82,y:.55},{x:.65,y:.62}] },
+  ];
+  const hub = { x:.5, y:.5 };
+
+  // Draw hub
+  addNode(vis, hub.x*W, hub.y*H, 'hub');
+
+  // Animate cluster reveal
+  clusters.forEach((cl, ci) => {
+    // nodes first
+    cl.nodes.forEach((nd, ni) => {
+      setTimeout(()=>{
+        const n = addNode(vis, nd.x*W, nd.y*H, 'pickup');
+        n.style.opacity = '0';
+        n.style.transition = 'opacity 0.4s';
+        setTimeout(()=>{ n.style.opacity='1'; }, 50);
+      }, ci*400 + ni*120);
+    });
+
+    // cluster circle
+    setTimeout(()=>{
+      const cc = document.createElement('div');
+      cc.className = 'cluster-circle';
+      cc.style.cssText = `
+        left:${cl.cx*100}%; top:${cl.cy*100}%;
+        width:${cl.r*2*W}px; height:${cl.r*2*H}px;
+        background:${cl.color}; border-color:${cl.stroke};
+        opacity:0; transition:opacity 0.6s;
+      `;
+      vis.appendChild(cc);
+      setTimeout(()=>{ cc.style.opacity='1'; }, 50);
+
+      // draw lines to hub
+      cl.nodes.forEach(nd => {
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', nd.x*W); line.setAttribute('y1', nd.y*H);
+        line.setAttribute('x2', hub.x*W); line.setAttribute('y2', hub.y*H);
+        line.setAttribute('stroke', cl.stroke);
+        line.setAttribute('stroke-width','1.5');
+        line.setAttribute('stroke-dasharray','6 4');
+        line.setAttribute('stroke-opacity','0.5');
+        line.style.opacity='0';
+        line.style.transition='opacity 0.5s';
+        svg.appendChild(line);
+        setTimeout(()=>{ line.style.opacity='1'; }, 200);
+      });
+    }, ci*400 + cl.nodes.length*120 + 200);
+  });
+
+  // drop nodes
+  setTimeout(()=>{
+    const drops = [{x:.45,y:.15},{x:.55,y:.8},{x:.85,y:.75}];
+    drops.forEach((d,i)=>{
+      setTimeout(()=>{
+        const n = addNode(vis, d.x*W, d.y*H, 'drop');
+        n.style.opacity='0'; n.style.transition='opacity 0.4s';
+        setTimeout(()=>{ n.style.opacity='1'; }, 50);
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1',hub.x*W); line.setAttribute('y1',hub.y*H);
+        line.setAttribute('x2',d.x*W); line.setAttribute('y2',d.y*H);
+        line.setAttribute('stroke','#1A3FCB');
+        line.setAttribute('stroke-width','2');
+        line.style.opacity='0'; line.style.transition='opacity 0.4s';
+        svg.appendChild(line);
+        setTimeout(()=>{ line.style.opacity='1'; },50);
+      }, i*200);
+    });
+  }, 1800);
+}
+
+function addNode(parent, x, y, type) {
+  const n = document.createElement('div');
+  n.className = `node ${type}`;
+  n.style.left = x+'px'; n.style.top = y+'px';
+  parent.appendChild(n);
+  return n;
+}
+
+// Scene 4: staggered steps
+function animateSteps() {
+  [1,2,3,4,5].forEach((i,idx)=>{
+    const el = document.getElementById('step'+i);
+    el.classList.remove('reveal');
+    setTimeout(()=>{ el.classList.add('reveal'); }, idx*140);
+  });
+}
+
+// Scene 5: layers
+function animateLayers() {
+  [1,2,3,4,5].forEach((i,idx)=>{
+    const el = document.getElementById('l'+i);
+    el.classList.remove('reveal');
+    setTimeout(()=>{ el.classList.add('reveal'); }, idx*160);
+  });
+}
+
+// Scene 6: big nums
+function animateBigNums() {
+  ['bn1','bn2','bn3','bn4'].forEach((id,idx)=>{
+    const el = document.getElementById(id);
+    el.classList.remove('reveal');
+    setTimeout(()=>{ el.classList.add('reveal'); }, idx*150);
+  });
+}
+
+// Scene 7: final lines
+function animateFinal() {
+  ['fl1','fl2','fl3'].forEach((id,idx)=>{
+    const el = document.getElementById(id);
+    el.style.opacity='0'; el.style.transform='translateY(40px)';
+    el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+    setTimeout(()=>{
+      el.style.opacity='1'; el.style.transform='translateY(0)';
+    }, idx*200);
+  });
+}
+
+// ── INIT ─────────────────────────────────────────
+const s1 = document.getElementById('s1');
+s1.classList.add('active');
+setProgress(0);
+resetAutoTimer();
+
+// Animate scene 1 brand on load
+setTimeout(()=>{
+  document.querySelector('.s1-brand').style.animation = 'slideUp 0.8s ease forwards';
+  document.querySelector('.s1-sub').style.animation = 'slideUp 0.8s ease 0.3s forwards';
+  document.querySelector('.s1-sub').style.opacity = '0';
+  setTimeout(()=>{ document.querySelector('.s1-sub').style.opacity='1'; }, 300);
+}, 100);
+</script>
+</body>
+</html>
