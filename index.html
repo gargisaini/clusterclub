@@ -939,10 +939,39 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('popup-step-1').classList.add('hidden');
     document.getElementById('popup-step-2').classList.remove('hidden');
   }
-  function submitForm() {
-    document.getElementById('popup-step-2').classList.add('hidden');
-    document.getElementById('popup-thankyou').classList.remove('hidden');
-  }
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz8pWRlBDXXEF0DaLZJOkrVa8mjO3ffI_5ycGOGFBn4AywqIOVGXwGKeJwvlEgGE0vo/exec'; // ← paste your URL here
+
+function submitForm() {
+  // Collect Step 1 fields
+  const inputs = document.querySelectorAll('#popup-step-1 input, #popup-step-1 select');
+  const step2  = document.querySelectorAll('#popup-step-2 select');
+
+  const data = {
+    fullName:      inputs[0]?.value || '',
+    mobile:        inputs[1]?.value || '',
+    company:       inputs[2]?.value || '',
+    city:          inputs[3]?.value || '',
+    deliveriesDay: inputs[4]?.value || '',
+    businessType:  step2[0]?.value || '',
+    vehicleType:   step2[1]?.value || '',
+    deliveryArea:  step2[2]?.value || '',
+    painPoint:     step2[3]?.value || '',
+    needSupport:   step2[4]?.value || ''
+  };
+
+  // Show thank-you immediately (don't make user wait)
+  document.getElementById('popup-step-2').classList.add('hidden');
+  document.getElementById('popup-thankyou').classList.remove('hidden');
+
+  // Send to Google Sheets in background
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors', // required for Apps Script
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).catch(err => console.error('Sheet submission error:', err));
+}
+
   // Make all CTA buttons open the popup
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('a[href="#pilot"], a[href="#"]').forEach(function(btn) {
